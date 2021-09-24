@@ -5,12 +5,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.imdb.domain.service.validation.ClienteValid;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@ClienteValid
 public class ClienteInput {
 	
 	@ApiModelProperty(example = "Bruna Cristina", required = true)

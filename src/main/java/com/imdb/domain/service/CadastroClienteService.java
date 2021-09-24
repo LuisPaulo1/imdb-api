@@ -6,8 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.imdb.core.configsecurity.security.UserSS;
-import com.imdb.domain.exception.AuthorizationException;
 import com.imdb.domain.exception.ClienteNaoEncontradoException;
 import com.imdb.domain.exception.NegocioException;
 import com.imdb.domain.model.Cliente;
@@ -25,26 +23,19 @@ public class CadastroClienteService {
 	}
 	
 	public Cliente buscar(Long id) {		
-		verificarPermissao(id);		
 		Cliente cliente = clienteRepository.findById(id)
 				.orElseThrow(() -> new ClienteNaoEncontradoException(id));
 		return cliente;
 	}
 	
 	@Transactional
-	public Cliente salvar(Cliente cliente) {		
-		if(cliente.getId() != null)
-			verificarPermissao(cliente.getId());
-		
-		validarEnderecoDeEmail(cliente);	
-			
+	public Cliente salvar(Cliente cliente) {					
 		adicionarPerfil(cliente);
 		return clienteRepository.save(cliente);
 	}
 	
 	@Transactional
-	public void excluir(Long id) {		
-		verificarPermissao(id);		
+	public void excluir(Long id) {	
 		Cliente cliente = buscar(id);
 		cliente.desativar();				
 	}
@@ -58,17 +49,4 @@ public class CadastroClienteService {
 		else
 			cliente.setPerfil(Perfil.CLIENTE.getCod());
 	}	
-	
-	private void validarEnderecoDeEmail(Cliente cliente) {
-		Cliente cli = clienteRepository.findByEmail(cliente.getEmail());
-		if(cli != null)
-			throw new NegocioException("Já existe um cadastro com o endereço de email informado.");
-	}
-	
-	private void verificarPermissao(Long id) {
-		UserSS user = UserService.authenticated();
-		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
-			throw new AuthorizationException("Acesso negado");
-		}
-	}
 }

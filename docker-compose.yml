@@ -1,21 +1,8 @@
 version: "3.9"
 
-networks:
-  imdb-network:
-    driver: bridge
-
 services:
-  imdb-mysql:
-    image: mysql:8.0
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-    ports:
-      - "3306:3306"
-    networks:
-      - imdb-network
-
   imdb-api:
-    build: .
+    image: csluispaulo/imdb-api
     command: ["/wait-for-it.sh", "imdb-mysql:3306", "-t", "30", "--", "java", "-jar", "api.jar"]
     environment:
       DB_HOST: imdb-mysql
@@ -24,4 +11,17 @@ services:
     networks:
       - imdb-network
     depends_on:
-      - imdb-mysql    
+      - imdb-mysql
+   
+  imdb-mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: "java"      
+    ports:
+      - "3306:3306"
+    networks:
+      - imdb-network        
+
+networks:
+  imdb-network:
+    driver: bridge      
