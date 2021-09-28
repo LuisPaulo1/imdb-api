@@ -53,7 +53,7 @@ Java 11, Git e Docker em execução
 # clonar repositório
 git clone https://github.com/LuisPaulo1/imdb-api.git
 
-# entrar na pasta do projeto backend
+# entrar na pasta do projeto imdb-api
 cd imdb-api
 
 # executar o projeto
