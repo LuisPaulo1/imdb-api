@@ -35,9 +35,8 @@ Importar o link no Postman: https://www.getpostman.com/collections/1ee9e2f6df2d8
 
 ## Tecnologias utilizadas
 - Java 11
-- Spring (boot, web, data, security)
+- Spring (boot, web, data, Validation, security)
 - JPA / Hibernate
-- Bean Validation
 - Lombok
 - Maven
 - Mysql
